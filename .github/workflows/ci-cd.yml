@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: Go 설정
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20.x'
+
+      - name: 의존성 설치
+        run: go mod download
+
+      - name: 빌드
+        run: go build -v ./...
+
+      - name: 테스트
+        run: go test -v ./...
+
+#    deploy:
+#      needs: build-test
+#      if: success()
+#      runs-on: ubuntu-latest
+#      steps:
+#        - name: 코드 체크아웃
+#          uses: actions/checkout@v3
+#
+#        - name: 배포용 바이너리 빌드
+#          run: GOOS=darwin GOARCH=amd64 go build -o fiber_api_server ./cmd/server
+#
+#        - name: SSH로 서버에 배포
+#          uses: appleboy/ssh-action@v0.1.8
+#          with:
+#            host: ${{ secrets.SERVER_HOST }}
+#            username: ${{ secrets.SERVER_USER }}
+#            key: ${{ secrets.SERVER_SSH_KEY }}
+#            port: 22
+#            source: "fiber_api_server"
+#            target: "/Users/youruser/apps/fiber_api_server"
