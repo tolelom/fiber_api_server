@@ -1,6 +1,6 @@
 module tolelom_api
 
-go 1.25.1
+go 1.25
 
 require (
 	github.com/gofiber/contrib/swagger v1.3.0
