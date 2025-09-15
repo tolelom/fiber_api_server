@@ -1,8 +1,9 @@
 package main
 
 import (
-	"os"
+	"log"
 	"tolelom_api/internal/config"
+	"tolelom_api/internal/router"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,14 +13,10 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!\n I'm fiber Server!")
-	})
+	router.Setup(app)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	addr := ":" + cfg.Port
+	if err := app.Listen(addr); err != nil {
+		log.Fatalf("Fiber server failed to start: %v", err)
 	}
-
-	app.Listen(":" + cfg.Port)
 }

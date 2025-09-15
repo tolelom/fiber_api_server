@@ -1,26 +1,21 @@
 package router
 
 import (
-	//"tolelom_api/internal/handler"
+	"tolelom_api/internal/handler"
 
-	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
+
+	_ "tolelom_api/docs"
+
+	fiberSwagger "github.com/swaggo/fiber-swagger"
 )
 
-func SetupRoutes(app *fiber.App) {
-	// swagger 설정
-	cfg := swagger.Config{
-		BasePath: "/",
-		FilePath: "./docs/swagger.json",
-		Path:     "swagger",
-		Title:    "Swagger API Docs",
-	}
-	app.Use(swagger.New(cfg))
+func Setup(app *fiber.App) {
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!\nI'm fiber Server!")
+	})
 
-	// API 라우트
-	//api := app.Group("/api")
-	//v1 := api.Group("/v1")
+	app.Get("/health", handler.HealthHandler)
 
-	//app.Get("/health", handler.HealthCheck)
-
+	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 }

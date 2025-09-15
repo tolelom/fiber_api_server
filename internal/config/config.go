@@ -1,29 +1,38 @@
 package config
 
 import (
+	"log"
 	"os"
+	"sync"
 
 	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Port        string
-	Environment string
-	// 데이터베이스, Redis 등 다른 설정들
+	Port string
 }
+
+var (
+	cfg  *Config
+	once sync.Once
+)
 
 func Load() *Config {
-	_ = godotenv.Load()
+	once.Do(func() {
+		// .env 파일 로드
+		if err := godotenv.Load(); err != nil {
+			log.Println(".env 파일을 찾을 수 없습니다.")
+		}
 
-	return &Config{
-		Port:        getEnv("PORT", "8080"),
-		Environment: getEnv("ENVIRONMENT", "development"),
-	}
-}
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
+		}
 
-func getEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-	return defaultValue
+		cfg = &Config{
+			Port: port,
+		}
+	})
+
+	return cfg
 }
