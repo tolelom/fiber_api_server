@@ -56,4 +56,4 @@ jobs:
           port: 22
           script: |
             pkill fiber_api_server || true
-            nohup /Users/tolelom/Desktop/projects/fiber_api_server > /dev/null 2>&1 &
+            nohup /Users/tolelom/Desktop/projects/fiber_api_server/fiber_api_server > /dev/null 2>&1 &
