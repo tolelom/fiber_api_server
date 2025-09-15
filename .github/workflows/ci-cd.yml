@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 배포용 바이너리 빌드
-        run: GOOS=darwin GOARCH=amd64 go build -o fiber_api_server ./cmd/server
+        run: GOOS=darwin GOARCH=arm64 go build -o fiber_api_server ./cmd/server
 
       - name: 서버에 파일 복사
         uses: appleboy/scp-action@v0.1.4
