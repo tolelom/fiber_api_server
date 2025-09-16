@@ -4,6 +4,7 @@ import (
 	"tolelom_api/internal/handler"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	_ "tolelom_api/docs"
 
@@ -11,11 +12,21 @@ import (
 )
 
 func Setup(app *fiber.App) {
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!\nI'm fiber Server!")
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowMethods: "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+	}))
+
+	app.Get("/api/hello", func(c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"message": "Hello, World! I'm fiber Server!",
+		})
 	})
 
 	app.Get("/health", handler.HealthHandler)
 
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
+
+	app.Post("/api/login", handler.LoginHandler)
 }

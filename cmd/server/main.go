@@ -9,7 +9,15 @@ import (
 )
 
 func main() {
-	cfg := config.Load()
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatalf("환경 변수 로딩 실패: %v", err)
+	}
+
+	if err := config.ConnectDB(cfg); err != nil {
+		log.Fatalf("DB 연결 실패: %v", err)
+	}
+	log.Println("MySQL DB 연결 성공")
 
 	app := fiber.New()
 
