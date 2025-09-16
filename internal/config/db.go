@@ -19,3 +19,5 @@ func ConnectDB(cfg *Config) error {
 	DB = db
 	return DB.AutoMigrate(&model.User{})
 }
+
+//
