@@ -55,5 +55,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
+            cd /Users/tolelom/Desktop/projects/fiber_api_server
             pkill fiber_api_server || true
-            nohup /Users/tolelom/Desktop/projects/fiber_api_server/fiber_api_server > /dev/null 2>&1 &
+            nohup ./fiber_api_server > /dev/null 2>&1 &
