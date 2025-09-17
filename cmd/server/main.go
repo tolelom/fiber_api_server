@@ -14,9 +14,8 @@ func main() {
 		log.Fatalf("환경 변수 로딩 실패: %v", err)
 	}
 
-	if err := config.ConnectDB(cfg); err != nil {
-		log.Fatalf("DB 연결 실패: %v", err)
-	}
+	config.InitDB()
+
 	log.Println("MySQL DB 연결 성공")
 
 	app := fiber.New()
