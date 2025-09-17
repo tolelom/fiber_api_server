@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"log"
 	"os"
 
@@ -10,7 +9,6 @@ import (
 
 type Config struct {
 	Port string
-	DSN  string
 }
 
 func Load() (*Config, error) {
@@ -24,13 +22,7 @@ func Load() (*Config, error) {
 		port = "8080"
 	}
 
-	dsn := os.Getenv("DSN")
-	if dsn == "" {
-		return nil, errors.New("DB_DSN 환경변수 미설정")
-	}
-
 	return &Config{
 		Port: port,
-		DSN:  dsn,
 	}, nil
 }
