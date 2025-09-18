@@ -20,7 +20,6 @@ func NewAuthService() *AuthService {
 }
 
 func (s *AuthService) RegisterUser(req *model.RegisterRequest) (*model.User, string, error) {
-
 	req.Username = strings.ToLower(strings.TrimSpace(req.Username))
 
 	var existing model.User
@@ -33,9 +32,12 @@ func (s *AuthService) RegisterUser(req *model.RegisterRequest) (*model.User, str
 		return nil, "", err
 	}
 
+	now := time.Now()
 	user := &model.User{
-		Username: req.Username,
-		Password: hash,
+		Username:  req.Username,
+		Password:  hash,
+		CreatedAt: now,
+		LastLogin: now,
 	}
 
 	if err := s.db.Create(user).Error; err != nil {
