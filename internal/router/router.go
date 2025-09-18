@@ -24,5 +24,7 @@ func Setup(app *fiber.App) {
 
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
-	app.Post("/api/login", authHandler.Login)
+	app.Post("/login", authHandler.Login)
+
+	app.Post("/register", authHandler.Register)
 }
