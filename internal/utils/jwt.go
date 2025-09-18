@@ -8,26 +8,15 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = []byte(getSecret())
+var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
-// getSecret retrieves the JWT secret from environment or uses a default.
-func getSecret() string {
-	if s := os.Getenv("JWT_SECRET"); s != "" {
-		return s
-	}
-
-	// XXX: 보안 이슈 주의
-	return "default-jwt-secret"
-}
-
-// Claims defines the structure of JWT payload.
 type Claims struct {
 	UserID   uint   `json:"user_id"`
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
-func GenerateJWT(user model.User) (string, error) {
+func GenerateJWT(user *model.User) (string, error) {
 	claims := Claims{
 		UserID:   user.ID,
 		Username: user.Username,

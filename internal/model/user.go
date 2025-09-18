@@ -3,25 +3,31 @@ package model
 import "time"
 
 type User struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	Username  string    `json:"username" gorm:"not null" validate:"required,min=2,max=20"`
-	Password  string    `json:"-" gorm:"not null" validate:"required,min=8"`
-	CreatedAt time.Time `json:"created_at"`
-	LastLogin time.Time `json:"last_login"`
+	ID        uint   `gorm:"primaryKey;autoIncrement"`
+	Username  string `gorm:"uniqueIndex;not null" validate:"required,min=2,max=20"`
+	Password  string `gorm:"not null" validate:"required,min=8"`
+	CreatedAt time.Time
+	LastLogin time.Time
 }
 
 type LoginRequest struct {
-	Name     string `json:"name" validate:"required,min=2,max=20"`
+	Username string `json:"username" validate:"required,min=2,max=20"`
 	Password string `json:"password" validate:"required,min=8"`
-}
-
-type LoginResponse struct {
-	Message string `json:"message"`
 }
 
 type RegisterRequest struct {
-	Name     string `json:"name" validate:"required,min=2,max=20"`
+	Username string `json:"username" validate:"required,min=2,max=20"`
 	Password string `json:"password" validate:"required,min=8"`
+}
+
+type AuthResponse struct {
+	Status string   `json:"status"`
+	Data   AuthData `json:"data"`
+}
+
+type AuthData struct {
+	User  UserResponse `json:"user"`
+	Token string       `json:"token"`
 }
 
 type UserResponse struct {

@@ -21,7 +21,7 @@ func JWTAuth() fiber.Handler {
 			return fiber.NewError(fiber.StatusUnauthorized, "Invalid or expired token")
 		}
 
-		c.Locals("user_id", claims.Username)
+		c.Locals("username", claims.Username)
 		return c.Next()
 	}
 }
