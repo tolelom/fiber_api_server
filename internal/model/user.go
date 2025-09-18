@@ -4,7 +4,7 @@ import "time"
 
 type User struct {
 	ID        uint   `gorm:"primaryKey;autoIncrement"`
-	Username  string `gorm:"uniqueIndex;not null" validate:"required,min=2,max=20"`
+	Username  string `gorm:"size:100;uniqueIndex;not null" validate:"required,min=2,max=20"`
 	Password  string `gorm:"not null" validate:"required,min=8"`
 	CreatedAt time.Time
 	LastLogin time.Time
