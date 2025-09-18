@@ -15,7 +15,19 @@ func main() {
 		log.Fatalf("Database initialization failed: %v", err)
 	}
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			code := fiber.StatusInternalServerError
+			if e, ok := err.(*fiber.Error); ok {
+				code = e.Code
+			}
+			return c.Status(code).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+				"data":    nil,
+			})
+		},
+	})
 
 	router.Setup(app)
 

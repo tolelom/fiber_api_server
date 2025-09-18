@@ -18,15 +18,11 @@ func Setup(app *fiber.App) {
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 	}))
 
-	app.Get("/api/hello", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello, World! I'm fiber Server!",
-		})
-	})
+	authHandler := handler.NewAuthHandler()
 
 	app.Get("/health", handler.HealthHandler)
 
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
-	app.Post("/api/login", handler.LoginHandler)
+	app.Post("/api/login", authHandler.Login)
 }
