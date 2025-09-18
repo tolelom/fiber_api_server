@@ -1,24 +1,12 @@
 package handler
 
 import (
+	"tolelom_api/internal/model"
+
 	"errors"
 
 	"github.com/gofiber/fiber/v2"
 )
-
-type LoginRequest struct {
-	ID       string `json:"id"`
-	Password string `json:"password"`
-}
-
-type LoginResponse struct {
-	Message string `json:"message"`
-}
-
-type RegisterRequest struct {
-	ID       string `json:"id"`
-	Password string `json:"password"`
-}
 
 func Authenticate(id, password string) error {
 	const demoID = "admin"
@@ -31,39 +19,39 @@ func Authenticate(id, password string) error {
 }
 
 func LoginHandler(c *fiber.Ctx) error {
-	var request LoginRequest
+	var request model.LoginRequest
 	if err := c.BodyParser(&request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "invalid request",
 		})
 	}
 
-	if request.ID == "" || request.Password == "" {
+	if request.Name == "" || request.Password == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "아이디와 비밀번호를 모두 입력해주세요.",
 		})
 	}
 
-	if err := Authenticate(request.ID, request.Password); err != nil {
+	if err := Authenticate(request.Name, request.Password); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "invalid user",
 		})
 	}
 
-	return c.JSON(LoginResponse{
+	return c.JSON(model.LoginResponse{
 		Message: "로그인 성공",
 	})
 }
 
 func RegisterHandler(c *fiber.Ctx) error {
-	var request RegisterRequest
+	var request model.RegisterRequest
 	if err := c.BodyParser(&request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "invalid request",
 		})
 	}
 
-	if request.ID == "" || request.Password == "" {
+	if request.Name == "" || request.Password == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "아이디와 비밀번호를 모두 입력해주세요.",
 		})

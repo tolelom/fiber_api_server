@@ -9,20 +9,18 @@ import (
 )
 
 func main() {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatalf("환경 변수 로딩 실패: %v", err)
+	cfg := config.LoadConfig()
+
+	if err := config.InitDataBase(cfg); err != nil {
+		log.Fatalf("Database initialization failed: %v", err)
 	}
-
-	config.InitDB()
-
-	log.Println("MySQL DB 연결 성공")
 
 	app := fiber.New()
 
 	router.Setup(app)
 
 	addr := ":" + cfg.Port
+	log.Printf("Server listening on %s", addr)
 	if err := app.Listen(addr); err != nil {
 		log.Fatalf("Fiber server failed to start: %v", err)
 	}
