@@ -57,4 +57,4 @@ jobs:
           script: |
             cd /Users/tolelom/Desktop/projects/fiber_api_server
             pkill fiber_api_server || true
-            nohup ./fiber_api_server > /dev/null 2>&1 &
+            nohup ./fiber_api_server > ./logs/stdout.log 2> ./logs/stderr.log  &
